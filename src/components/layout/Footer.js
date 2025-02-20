@@ -1,30 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Container } from "react-bootstrap";
 import axios from "axios";
+import { Container } from "react-bootstrap";
 
 const Footer = () => {
-  const [customerCount, setCustomerCount] = useState(0);
-  const [productCount, setProductCount] = useState(0);
+  const [counts, setCounts] = useState({ customers: 0, products: 0, orders: 0 });
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const customerRes = await axios.get("/api/customers");
-        const productRes = await axios.get("/api/products");
-        setCustomerCount(customerRes.data.length);
-        setProductCount(productRes.data.length);
+        const response = await axios.get("http://127.0.0.1:5000/api/counts"); // Ensure correct API URL
+        setCounts(response.data);
       } catch (error) {
         console.error("Error fetching counts:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCounts();
   }, []);
 
   return (
-    <footer className="bg-dark text-light text-center py-3 mt-4">
-      <Container>
-        <p>&copy; {new Date().getFullYear()} Tevin Barrios/BarriosTevin@gmail.com Your E-Commerce. All rights reserved.</p>
-        <p>📊 {customerCount} Customers | 🛒 {productCount} Products</p>
+    <footer className="bg-dark text-white py-3 mt-4">
+      <Container className="text-center">
+        {loading ? (
+          <p className="text-center">Loading...</p>
+        ) : (
+          <p>
+            📊 Customers: {counts.customers} | 🛒 Products: {counts.products} | 📦 Orders: {counts.orders}
+          </p>
+        )}
       </Container>
     </footer>
   );

@@ -22,7 +22,7 @@ const CustomerUpdateForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`/api/customers/${id}`, customer);
+      await axios.put(`http://127.0.0.1:5000/api/customers/${id}`, customer);
       navigate("/customers");
     } catch (error) {
       console.error("Error updating customer:", error);

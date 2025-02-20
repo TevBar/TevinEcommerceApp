@@ -10,7 +10,7 @@ const CustomerList = () => {
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
-        const response = await axios.get("/api/customers");
+        const response = await axios.get("http://127.0.0.1:5000/api/customers");
         setCustomers(response.data);
       } catch (error) {
         console.error("Error fetching customers:", error);
@@ -26,7 +26,7 @@ const CustomerList = () => {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`/api/customers/${customerId}`);
+      await axios.delete(`http://127.0.0.1:5000/api/customers/${customerId}`);
       setCustomers(customers.filter(customer => customer.id !== customerId)); // Update UI
     } catch (error) {
       console.error("Error deleting customer:", error);

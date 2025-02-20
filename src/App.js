@@ -1,4 +1,4 @@
-import "bootstrap/dist/css/bootstrap.min.css"; 
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/global.css";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -21,6 +21,7 @@ import CustomerForm from "./components/Customer/CustomerForm";
 import OrderForm from "./components/Order/OrderForm";
 
 import { generateHashes } from "./services/hashing";
+import axios from "axios"; // ✅ Import axios for API health check
 
 // Load all API keys from .env
 const apiKeys = {
@@ -47,13 +48,26 @@ console.log("Environment Variables:", process.env);
 const hashes = generateHashes(apiKeys);
 console.log("Generated Hashes:", hashes);
 
+// ✅ Check backend API health (Debugging step)
+const checkAPIHealth = async () => {
+  try {
+    const response = await axios.get("http://127.0.0.1:5000/api/counts");
+    console.log("API Health Check:", response.data);
+  } catch (error) {
+    console.error("API Health Check Failed:", error);
+  }
+};
+
+// Run API health check
+checkAPIHealth();
+
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        
+
         {/* Customer Routes */}
         <Route path="/customers" element={<CustomerPage />} />
         <Route path="/customers/list" element={<CustomerList />} />
